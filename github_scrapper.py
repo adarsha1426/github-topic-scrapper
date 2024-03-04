@@ -10,13 +10,13 @@ content=r.text
 # with open('topics.html','w',encoding='utf-8') as f:
 #     f.write(content)
 
-parsed_doc=BeautifulSoup(content,'html.parser')
+parsed_doc_1=BeautifulSoup(content,'html.parser')
 
-title_tags=parsed_doc.find_all('p',
+title_tags=parsed_doc_1.find_all('p',
                 {'class':'f3 lh-condensed mb-0 mt-1 Link--primary'})
-description_tags=parsed_doc.find_all('p',{'class':"f5 color-fg-muted mb-0 mt-1"})
+description_tags=parsed_doc_1.find_all('p',{'class':"f5 color-fg-muted mb-0 mt-1"})
 
-link_tags=parsed_doc.find_all('a',{'class':'no-underline flex-1 d-flex flex-column'})
+link_tags=parsed_doc_1.find_all('a',{'class':'no-underline flex-1 d-flex flex-column'})
 # topic_page_url='https://github.com'+link_tags[0]['href']
 # print(topic_page_url)
 
@@ -38,25 +38,46 @@ for topic_url in link_tags:
     i+=1
     topic_urls.append(topic_url)
 # print(topic_urls)  #url ko list
-    
+        
 topic_dict={'Topic':topic_title,
             'Description':topic_desc,
             'Url':topic_urls
             }
-
-
 topics_df=pd.DataFrame(topic_dict)
 # print(topics_df)
-
-
 topics_df.to_csv('topics.csv',index=None)
 
-
-#getting the information from the topics url
-
-#scrapping another page of github
-
-for topic in topic_urls:
-    print(topic)
-
-
+new_url=topic_urls[0]
+response=requests.get(new_url)
+sub_topic_content=response.text
+parsed_doc_2=BeautifulSoup(sub_topic_content,'html.parser')
+sub_topic_username=parsed_doc_2.find_all('h3',{'class':'f3 color-fg-muted text-normal lh-condensed'})
+username=[]
+username_url=[]
+repo_url=[]
+repo_name=[]
+for i in range(0,len(sub_topic_username)):
+    user_tag=sub_topic_username[i].find_all('a')
+    username.append(user_tag[0].text.strip())
+    username.append("https://github.com/"+user_tag[0].text.strip())
+    repo_name.append(user_tag[1].text.strip())
+    repo_url.append("https://github.com/"+user_tag[1].text.strip())
+#for stars in that repo
+star=parsed_doc_2.find_all('span',{'id':'repo-stars-counter-star'})
+star_count=[]
+for i in range(len(star)):
+    star_count.append(star[i].text)
+repo_dict={
+    'Username':username,
+    'Username Url':username_url,
+    'Repository Name':repo_name,
+    'Repo Url':repo_url,
+    'Star Count':star_count
+}
+repo_df=pd.DataFrame(repo_dict)
+print(repo_df)
+# repo_df.to_csv('repos.csv',index=None)
+# def get_topic_repo(topic_url):
+#     if response.status_code!=200:
+#         raise ValueError(f"Failed to load page {topic_url}")
+    
