@@ -14,6 +14,9 @@ pip install pandas
 ```
 git clone https://github.com/adarsha1426/github-topic-scrapper.git
 ```
+
+##Install the requirements
+
 ## Run using the following command
 ```
 python github-scrapper.py
