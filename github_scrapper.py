@@ -132,18 +132,5 @@ def get_sub_topic():
 
 if __name__=="__main__":
     get_sub_topic()
-topics_df=pd.DataFrame(topic_dict)
-# print(topics_df)
-
-
-topics_df.to_csv('topics.csv',index=None)
-
-
-#getting the information from the topics url
-
-#scrapping another page of github
-
-for topic in topic_urls:
-    print(topic)
 
 
