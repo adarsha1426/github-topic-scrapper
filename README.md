@@ -25,3 +25,6 @@ python github-scrapper.py
 ## Output
 ### The following is a sample of output
 ![image](https://github.com/adarsha1426/github-topic-scrapper/assets/87539588/8322eaf7-5e73-4fc1-aca4-c9545496b503)
+
+This project is inspired for jovian with some additonal features and writing own funcctions as well.
+
